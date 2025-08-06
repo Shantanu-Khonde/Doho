@@ -170,11 +170,14 @@ async def get_room(room_id: str):
     
     return RoomWithOccupants(**room, occupants=occupants)
 
+class RoomStatusUpdate(BaseModel):
+    status: RoomStatus
+
 @api_router.put("/rooms/{room_id}/status")
-async def update_room_status(room_id: str, status: RoomStatus):
+async def update_room_status(room_id: str, status_update: RoomStatusUpdate):
     result = await db.rooms.update_one(
         {"id": room_id},
-        {"$set": {"status": status}}
+        {"$set": {"status": status_update.status}}
     )
     if result.matched_count == 0:
         raise HTTPException(status_code=404, detail="Room not found")
