@@ -210,7 +210,7 @@ class HostelAPITester:
             "PUT",
             f"rooms/{self.created_room_id}/status",
             200,
-            data="maintenance"
+            data={"status": "maintenance"}
         )
         return success
 
